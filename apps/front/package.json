@@ -1,0 +1,38 @@
+{
+  "name": "front",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "yarn run next start -p 4000",
+    "dev": "yarn run next dev -p 4000",
+    "build": "rm -rf ./next && ts-node -T --project ./node.tsconfig.json scripts/build",
+    "test": "yarn run lint && yarn run tsc",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.12",
+    "@types/classnames": "^2.2.11",
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0",
+    "autoprefixer": "^10.1.0",
+    "classnames": "^2.2.6",
+    "immer": "8.0.0",
+    "next": "^10.0.4",
+    "next-images": "^1.6.2",
+    "next-transpile-modules": "^6.0.0",
+    "postcss": "^8.2.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-hook-form": "^6.12.2",
+    "react-use": "^15.3.4",
+    "tailwind-override": "^0.0.7",
+    "tailwindcss": "^2.0.1",
+    "use-immer": "^0.4.2"
+  }
+}
