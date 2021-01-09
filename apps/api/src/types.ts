@@ -5,7 +5,7 @@ export type Handler = (req: Request, res: Response, next: NextFunction) => void;
 
 export interface AppUser {
   _id: ObjectID;
-  email: string;
+  username: string;
 }
 
 declare module 'express' {

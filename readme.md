@@ -10,3 +10,12 @@
  - profil osoby i jej posty
  - bez suba zdjecie jest zablokowane
  - licznik zarobkow
+
+
+### Stack
+- React, Next.js
+- Typescript
+- Nodejs
+- Tailwind
+- Mongodb
+- Context API bez reduxa

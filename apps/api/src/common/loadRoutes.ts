@@ -5,6 +5,8 @@ import { BadRequestError, UnauthorizedError } from './errors';
 import { logger } from './logger';
 import { Handler } from '../types';
 import { getBindings } from './bindings';
+import { TokenCollection } from '../collections/Token';
+import { UserCollection } from '../collections/User';
 
 export default function loadRoutes(router: Router) {
   const bindings = getBindings('rpc');
@@ -16,9 +18,16 @@ export default function loadRoutes(router: Router) {
           return next();
         }
         try {
-          // req.user = await _getAppUser(token);
-          // next();
-          next(new Error('Not implemented'));
+          const userToken = await TokenCollection.findById(token);
+          if (!userToken) {
+            return next();
+          }
+          const user = await UserCollection.findByIdOrThrow(userToken.userId);
+          req.user = {
+            _id: user._id,
+            username: user.username,
+          };
+          next();
         } catch (e) {
           next(e);
         }

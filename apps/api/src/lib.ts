@@ -29,7 +29,9 @@ export function createRpcBinding(options: CreateRpcBindingOptions): RpcBinding {
   };
 }
 
-export const s3 = new AWS.S3();
+export const s3 = new AWS.S3({
+  region: 'eu-central-1',
+});
 
 export const { createContract } = initialize({
   debug: process.env.NODE_ENV === 'development',

@@ -1,7 +1,7 @@
 /// <reference types="typescript/lib/lib.dom" />
 
 // IMPORTS
-import { Foo } from './types';
+import { Foo, Post, PaginatedResult, Profile, User, AuthData } from './types';
 // IMPORTS END
 
 export class APIClient {
@@ -26,6 +26,45 @@ export class APIClient {
   }
   foo_getAllFoos(): Promise<Foo[]> {
     return this.call('foo.getAllFoos', {});
+  }
+  media_getUploadUrl(): Promise<{
+    url: string;
+    fields: Record<string, string>;
+  }> {
+    return this.call('media.getUploadUrl', {});
+  }
+  post_createPost(values: {
+    text: string | null;
+    imageUrl: string | null;
+  }): Promise<{ id: string }> {
+    return this.call('post.createPost', { values });
+  }
+  post_getPost(id: ObjectId): Promise<Post> {
+    return this.call('post.getPost', { id });
+  }
+  post_getPosts(
+    username: string,
+    skip: number
+  ): Promise<PaginatedResult<Post>> {
+    return this.call('post.getPosts', { username, skip });
+  }
+  profile_getProfile(username: string): Promise<Profile> {
+    return this.call('profile.getProfile', { username });
+  }
+  user_getMe(): Promise<User> {
+    return this.call('user.getMe', {});
+  }
+  user_login(values: {
+    username: string;
+    password: string;
+  }): Promise<AuthData> {
+    return this.call('user.login', { values });
+  }
+  user_register(values: {
+    username: string;
+    password: string;
+  }): Promise<AuthData> {
+    return this.call('user.register', { values });
   }
   // SIGNATURES END
   private async call(name: string, params: any): Promise<any> {

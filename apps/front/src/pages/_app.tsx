@@ -5,12 +5,16 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { createSSRClient } from 'src/common/helper';
 import '../styles/global.css';
+import { User } from 'shared';
+import { AuthModule } from 'src/components/AuthModule';
 
 config.autoAddCss = false;
 
-interface GlobalProps {}
+interface GlobalProps {
+  user: User | null;
+}
 
-function App({ Component, pageProps }: AppProps & GlobalProps) {
+function App({ Component, pageProps, user }: AppProps & GlobalProps) {
   return (
     <>
       <Head>
@@ -26,16 +30,25 @@ function App({ Component, pageProps }: AppProps & GlobalProps) {
 
         <title>Onlycats</title>
       </Head>
-      <Component {...pageProps} />
-      <div id="portals" />
+      <AuthModule initialUser={user}>
+        <Component {...pageProps} />
+        <div id="portals" />
+      </AuthModule>
     </>
   );
 }
 
 App.getInitialProps = async ({ ctx }: AppContext) => {
-  /* const api = */ createSSRClient(ctx);
+  const api = createSSRClient(ctx);
 
-  return {};
+  let user: User | null = null;
+  if (api.getToken()) {
+    user = await api.user_getMe();
+  }
+
+  return {
+    user,
+  };
 };
 
 export default App;
