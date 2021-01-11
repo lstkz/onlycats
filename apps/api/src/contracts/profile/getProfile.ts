@@ -1,6 +1,7 @@
 import { S } from 'schema';
 import { Profile } from 'shared';
 import { UserCollection } from '../../collections/User';
+import { UserSubscriptionCollection } from '../../collections/UserSubscription';
 import { AppError } from '../../common/errors';
 import { createContract, createRpcBinding } from '../../lib';
 
@@ -18,11 +19,15 @@ export const getProfile = createContract('profile.getProfile')
     if (!targetUser) {
       throw new AppError('Profile not found');
     }
+    const sub = await UserSubscriptionCollection.findOne({
+      targetUserId: targetUser._id,
+      userId: user._id,
+    });
     return {
       id: targetUser._id.toHexString(),
       username: targetUser.username,
       isMe: user._id.equals(targetUser._id),
-      isSubscribed: false,
+      isSubscribed: !!sub,
     };
   });
 

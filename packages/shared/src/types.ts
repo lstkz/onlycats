@@ -6,6 +6,7 @@ export interface Foo {
 export interface User {
   id: string;
   username: string;
+  total: number;
 }
 
 export interface AuthData {

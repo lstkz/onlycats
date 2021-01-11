@@ -7,6 +7,9 @@ export interface UserModel {
   username_lowered: string;
   salt: string;
   password: string;
+  customerId?: string;
+  productId?: string;
+  priceId?: string;
 }
 
 export const UserCollection = createCollection<UserModel>('user', [

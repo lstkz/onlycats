@@ -16,7 +16,11 @@ export function Dashboard(props: DashboardProps) {
   return (
     <div>
       <div className="flex bg-green-500 px-2 py-4 text-white justify-between items-center">
-        <h1 className="font-bold  text-lg">OnlyCats</h1>
+        <Link href="/home">
+          <a className="text-white">
+            <h1 className="font-bold  text-lg">OnlyCats</h1>
+          </a>
+        </Link>
         <div className="flex items-center">
           <Link href="/create-post">
             <a className="text-white w-5 h-5 flex items-center justify-center text-xs bg-yellow-500 mr-4 hover:bg-yellow-600 cursor-pointer">
@@ -25,6 +29,7 @@ export function Dashboard(props: DashboardProps) {
           </Link>
 
           <span className="mr-2">Hello, @{user.username}</span>
+          {user.total > 0 && <span className="mr-2">(${user.total})</span>}
           <Button onClick={logout}>logout</Button>
         </div>
       </div>

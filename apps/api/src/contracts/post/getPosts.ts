@@ -2,6 +2,7 @@ import { S } from 'schema';
 import { PaginatedResult, Post } from 'shared';
 import { PostCollection } from '../../collections/Post';
 import { UserCollection } from '../../collections/User';
+import { UserSubscriptionCollection } from '../../collections/UserSubscription';
 import { AppError } from '../../common/errors';
 import { mapPost } from '../../common/mapper';
 import { createContract, createRpcBinding } from '../../lib';
@@ -21,7 +22,7 @@ export const getPosts = createContract('post.getPosts')
     if (!targetUser) {
       throw new AppError('Profile not found');
     }
-    const [items, total] = await Promise.all([
+    const [items, total, sub] = await Promise.all([
       (
         await PostCollection.find({
           userId: targetUser._id,
@@ -36,11 +37,15 @@ export const getPosts = createContract('post.getPosts')
       PostCollection.countDocuments({
         userId: targetUser._id,
       }),
+      UserSubscriptionCollection.findOne({
+        targetUserId: targetUser._id,
+        userId: user._id,
+      }),
     ]);
 
     return {
       total,
-      items: items.map(item => mapPost(item, targetUser)),
+      items: items.map(item => mapPost(item, targetUser, !!sub)),
     };
   });
 

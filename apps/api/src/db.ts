@@ -25,6 +25,7 @@ import {
   WithId,
   ClientSession,
   CollectionAggregationOptions,
+  MongoDistinctPreferences,
 } from 'mongodb';
 const dbSessionStorage = new AsyncLocalStorage<ClientSession>();
 
@@ -96,6 +97,8 @@ interface CustomDbCollection<TSchema> {
   ): Promise<DeleteWriteOpResultObject>;
 }
 
+type FlattenIfArray<T> = T extends ReadonlyArray<infer R> ? R : T;
+
 export interface DbCollection<TSchema> extends CustomDbCollection<TSchema> {
   aggregate<T>(
     pipeline?: object[],
@@ -148,6 +151,12 @@ export interface DbCollection<TSchema> extends CustomDbCollection<TSchema> {
     fields: Array<keyof TSchema>,
     options?: CommonOptions
   ): Promise<void>;
+
+  distinct<Key extends keyof WithId<TSchema>>(
+    key: Key,
+    query?: FilterQuery<TSchema>,
+    options?: MongoDistinctPreferences
+  ): Promise<Array<FlattenIfArray<WithId<TSchema>[Key]>>>;
 }
 
 export function createCollection<T>(
@@ -247,6 +256,9 @@ export function createCollection<T>(
     },
     deleteOne(...args) {
       return exec('deleteOne', 2, args);
+    },
+    distinct(...args) {
+      return exec('distinct', 3, args);
     },
     deleteById(id, options) {
       return this.deleteOne(

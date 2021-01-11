@@ -1,6 +1,7 @@
 import { S } from 'schema';
 import { User } from 'shared';
 import { createContract, createRpcBinding } from '../../lib';
+import { getTotalEarnings } from './getTotalEarnings';
 
 export const getMe = createContract('user.getMe')
   .params('user')
@@ -12,6 +13,7 @@ export const getMe = createContract('user.getMe')
     return {
       id: user._id.toHexString(),
       username: user.username,
+      total: await getTotalEarnings(user._id),
     };
   });
 

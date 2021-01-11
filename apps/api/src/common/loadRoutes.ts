@@ -23,10 +23,7 @@ export default function loadRoutes(router: Router) {
             return next();
           }
           const user = await UserCollection.findByIdOrThrow(userToken.userId);
-          req.user = {
-            _id: user._id,
-            username: user.username,
-          };
+          req.user = user;
           next();
         } catch (e) {
           next(e);

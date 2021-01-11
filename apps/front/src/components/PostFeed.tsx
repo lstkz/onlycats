@@ -19,7 +19,13 @@ export function PostFeed(props: PostFeedProps) {
       </div>
       {post.text}
 
-      {post.imageUrl && <img className="mt-4" src={post.imageUrl} />}
+      {post.isRestricted ? (
+        <div className="w-full bg-gray-200 rounded-xl h-20 flex items-center justify-center">
+          Subscribe to see this post
+        </div>
+      ) : (
+        post.imageUrl && <img className="mt-4" src={post.imageUrl} />
+      )}
     </div>
   );
 }

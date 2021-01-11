@@ -7,6 +7,11 @@ import { createSSRClient } from 'src/common/helper';
 import '../styles/global.css';
 import { User } from 'shared';
 import { AuthModule } from 'src/components/AuthModule';
+import { STRIPE_KEY } from 'src/config';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(STRIPE_KEY);
 
 config.autoAddCss = false;
 
@@ -30,10 +35,12 @@ function App({ Component, pageProps, user }: AppProps & GlobalProps) {
 
         <title>Onlycats</title>
       </Head>
-      <AuthModule initialUser={user}>
-        <Component {...pageProps} />
-        <div id="portals" />
-      </AuthModule>
+      <Elements stripe={stripePromise}>
+        <AuthModule initialUser={user}>
+          <Component {...pageProps} />
+          <div id="portals" />
+        </AuthModule>
+      </Elements>
     </>
   );
 }

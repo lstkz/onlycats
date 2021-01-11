@@ -1,8 +1,10 @@
 import { ContractMeta, initialize } from 'contract';
 import { ObjectSchema, StringSchema } from 'schema';
 import AWS from 'aws-sdk';
+import Stripe from 'stripe';
 import { AppUser } from './types';
 import { ObjectID } from 'mongodb';
+import { config } from './config';
 
 export interface CreateRpcBindingOptions {
   injectUser?: boolean;
@@ -58,3 +60,7 @@ StringSchema.prototype.objectId = function objectId(this: StringSchema) {
 ObjectSchema.prototype.appUser = function appUser(this: ObjectSchema) {
   return this.as<AppUser>().unknown();
 };
+
+export const stripe = new Stripe(config.stripe.secret, {
+  apiVersion: '2020-08-27',
+});

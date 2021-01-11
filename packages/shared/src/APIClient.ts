@@ -1,7 +1,7 @@
 /// <reference types="typescript/lib/lib.dom" />
 
 // IMPORTS
-import { Foo, Post, PaginatedResult, Profile, User, AuthData } from './types';
+import { Foo, PaginatedResult, Post, Profile, User, AuthData } from './types';
 // IMPORTS END
 
 export class APIClient {
@@ -33,11 +33,20 @@ export class APIClient {
   }> {
     return this.call('media.getUploadUrl', {});
   }
+  payment_subscribe(values: {
+    paymentMethodId: string;
+    username: string;
+  }): Promise<{ id: string }> {
+    return this.call('payment.subscribe', { values });
+  }
   post_createPost(values: {
     text: string | null;
     imageUrl: string | null;
   }): Promise<{ id: string }> {
     return this.call('post.createPost', { values });
+  }
+  post_getHomeFeed(skip: number): Promise<PaginatedResult<Post>> {
+    return this.call('post.getHomeFeed', { skip });
   }
   post_getPost(id: ObjectId): Promise<Post> {
     return this.call('post.getPost', { id });
@@ -50,6 +59,9 @@ export class APIClient {
   }
   profile_getProfile(username: string): Promise<Profile> {
     return this.call('profile.getProfile', { username });
+  }
+  profile_getRecommendedProfiles(): Promise<Profile[]> {
+    return this.call('profile.getRecommendedProfiles', {});
   }
   user_getMe(): Promise<User> {
     return this.call('user.getMe', {});
